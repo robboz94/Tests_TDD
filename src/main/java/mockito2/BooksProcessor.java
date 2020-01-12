@@ -19,7 +19,8 @@ public class BooksProcessor {
     // jeśli żadna z 3 prób się nie powiedzie rzucany jest wyjątek z odpowiednią wiadomością
     public double getTotalPrice() {
         try {
-            return runWithRetries(3, () -> this.database.getBooks().stream().mapToDouble(Book::getPrice).sum());
+            return runWithRetries(3, () -> this.database.getBooks().stream()
+                    .mapToDouble(Book::getPrice).sum());
         } catch (Exception e) {
             throw generateBooksProcessorException(e);
         }
@@ -48,8 +49,7 @@ public class BooksProcessor {
         while (count < maxRetries) {
             try {
                 return t.call();
-            }
-            catch (RuntimeException e) {
+            } catch (RuntimeException e) {
                 if (++count >= maxRetries) {
                     throw e;
                 }
